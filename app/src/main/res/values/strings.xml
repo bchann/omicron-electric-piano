@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Electric Piano</string>
 
-    <string-array name="planets_array">
+    <string-array name="sounds_array">
         <item>Normal</item>
         <item>Trumpets</item>
         <item>Geese</item>
