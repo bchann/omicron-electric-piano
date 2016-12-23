@@ -2,7 +2,6 @@ package com.example.brian.piano;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
-import android.net.Uri;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,11 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
-
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 public class MainActivity extends AppCompatActivity {
     private BluetoothAdapter bluetoothAdapter;
@@ -35,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
         connectButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                connect(v);
+                //connect(v);
             }
         });
 
@@ -46,6 +40,25 @@ public class MainActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         soundSpinner.setAdapter(adapter);
+
+        applyButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                String sound = soundSpinner.getSelectedItem().toString();
+
+                Toast.makeText(getApplicationContext(), "Piano sound set to " + sound,
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                soundSpinner.setSelection(0);
+
+                Toast.makeText(getApplicationContext(), "Piano sound reset",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     //Turns on the bluetooth adapter for the device
@@ -58,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         bluetoothAdapter.disable();
     }
 
+    //Turns on bluetooth and brings user to the bluetooth settings screen
     private void connect(View v) {
         turnOn(v);
         startActivity(new Intent(Settings.ACTION_BLUETOOTH_SETTINGS));
