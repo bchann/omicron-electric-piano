@@ -13,33 +13,30 @@
     tools:context="com.example.brian.piano.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:weightSum="1">
+        android:layout_height="match_parent">
 
         <TextView
             android:text="Select a tone:"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:id="@+id/textView2" />
+            android:id="@+id/selectText" />
 
         <Spinner
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_below="@+id/selectText"
             android:id="@+id/spinner"
             style="@style/Widget.AppCompat.Spinner.Underlined" />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.00">
+            android:layout_height="50dp"
+            android:layout_below="@+id/spinner">
 
             <Button
                 android:text="Apply"
@@ -48,6 +45,7 @@
                 android:textAllCaps="false"
                 android:id="@+id/applyButton"
                 android:layout_weight="1"
+                android:onClick="apply"
                 style="@style/Widget.AppCompat.Button.Colored" />
 
             <Button
@@ -57,6 +55,7 @@
                 android:textAllCaps="false"
                 android:id="@+id/resetButton"
                 android:layout_weight="1"
+                android:onClick="reset"
                 style="@style/Widget.AppCompat.Button.Colored" />
         </LinearLayout>
 
@@ -64,10 +63,12 @@
             android:text="Connect"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             android:textAllCaps="false"
             android:textColor="@drawable/button_text_color"
             android:id="@+id/connectButton"
-            android:background="@drawable/custom_button" />
+            android:background="@drawable/custom_button"
+            android:onClick="connect" />
+    </RelativeLayout>
 
-    </LinearLayout>
 </RelativeLayout>
