@@ -15,7 +15,6 @@ public class BluetoothListener extends AppCompatActivity {
         setContentView(R.layout.activity_bluetooth_listener);
 
         Piano piano = new Piano();
-
         numKeys = piano.numKeys;
 
         for (int i = 0; i < numKeys; i++) {
