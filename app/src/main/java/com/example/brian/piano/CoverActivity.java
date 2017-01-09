@@ -1,5 +1,8 @@
 package com.example.brian.piano;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -9,15 +12,30 @@ import android.view.View;
 import android.widget.Button;
 
 import java.io.IOException;
+import java.util.Set;
+import java.util.UUID;
 
 public class CoverActivity extends AppCompatActivity {
-
     private MediaPlayer mp;
+    BluetoothAdapter mBluetoothAdapter;
+    BluetoothDevice mDevice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cover);
+
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (mBluetoothAdapter == null) {
+            System.err.println("ERROR: Device does not support Bluetooth");
+        }
+
+        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+        if (pairedDevices.size() > 0) {
+            for (BluetoothDevice device : pairedDevices) {
+                mDevice = device;
+            }
+        }
 
         Button helpButton = (Button) findViewById(R.id.aboutButton);
 
@@ -49,6 +67,5 @@ public class CoverActivity extends AppCompatActivity {
     }
 
     //How to use fragment
-    public void help(View v) {
-    }
+    public void help(View v) {}
 }

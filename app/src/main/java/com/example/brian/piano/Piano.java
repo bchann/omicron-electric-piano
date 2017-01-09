@@ -12,7 +12,7 @@ import java.lang.reflect.Field;
 
 public class Piano {
 
-    private final int numKeys = 39;
+    public final int numKeys = 39;
     private int prevState[] = new int[numKeys];
     private int currState[] = new int[numKeys];
     private MediaPlayer notes[] = new MediaPlayer[numKeys];
@@ -25,11 +25,18 @@ public class Piano {
 
         for (int i = 0; i < input.length(); i++) {
             currState[i] = Character.getNumericValue(input.charAt(i));
+
+            try {
+                checkKey(i);
+            } catch (IOException e) {
+                System.err.println("ERROR: parseString()");
+                e.printStackTrace();
+            }
         }
     }
 
     //Checks if the key should change states
-    public void checkKey(int key) throws IOException {
+    private void checkKey(int key) throws IOException {
         if (prevState[key] == 0 && currState[key] == 1 ) {
             playNote(key);
         }
@@ -45,12 +52,12 @@ public class Piano {
         notes[key] = mp;
     }
 
-    public void playNote(int key) {
+    private void playNote(int key) {
         //error but works, needs to copy to activity
         notes[key].start();
     }
 
-    public void stopNote(int key) throws IOException {
+    private void stopNote(int key) throws IOException {
         notes[key].stop();
         notes[key].prepare();
     }
