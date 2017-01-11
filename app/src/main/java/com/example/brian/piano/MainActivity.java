@@ -108,8 +108,4 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    //Prevents user from navigating back to the title screen
-    @Override
-    public void onBackPressed () { }
 }

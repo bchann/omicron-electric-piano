@@ -69,7 +69,6 @@
                 android:id="@+id/aboutButton"
                 android:layout_weight="1"
                 android:textAllCaps="false"
-                android:onClick="help"
                 style="@style/Widget.AppCompat.Button.Colored" />
         </LinearLayout>
 

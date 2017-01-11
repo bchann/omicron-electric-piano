@@ -17,25 +17,11 @@ import java.util.UUID;
 
 public class CoverActivity extends AppCompatActivity {
     private MediaPlayer mp;
-    BluetoothAdapter mBluetoothAdapter;
-    BluetoothDevice mDevice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cover);
-
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (mBluetoothAdapter == null) {
-            System.err.println("ERROR: Device does not support Bluetooth");
-        }
-
-        Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
-        if (pairedDevices.size() > 0) {
-            for (BluetoothDevice device : pairedDevices) {
-                mDevice = device;
-            }
-        }
 
         Button helpButton = (Button) findViewById(R.id.aboutButton);
 
@@ -44,7 +30,7 @@ public class CoverActivity extends AppCompatActivity {
         helpButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     mp.start();
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
                     mp.stop();
