@@ -80,11 +80,11 @@ public class BluetoothListener extends AppCompatActivity {
         piano = new Piano();
         numKeys = piano.numKeys;
 
-        /*for (int i = 0; i < numKeys; i++) {
+        for (int i = 0; i < numKeys; i++) {
             int resId = getResourceId("abc" + Integer.toString(i), "raw", getPackageName());
 
             piano.insertMP(i, MediaPlayer.create(this, resId));
-        }*/
+        }
 
         final Button startButton = (Button)findViewById(R.id.start);
 
@@ -92,6 +92,12 @@ public class BluetoothListener extends AppCompatActivity {
             public void onClick(View v) {
                 System.err.println("hello");
                 findBT();
+
+                try {
+                    openBT();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -123,8 +129,8 @@ public class BluetoothListener extends AppCompatActivity {
         Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
         if(pairedDevices.size() > 0) {
             for(BluetoothDevice device : pairedDevices) {
-                System.err.println("Device: " + device.getName());
-                if(device.getName().equals("O-livePiano")) {
+                //System.err.println("Device: " + device.getName());
+                if(device.getName().equals("HC-05")) {
                     System.err.println("Device: " + device.getName());
                     mmDevice = device;
                     break;
@@ -141,12 +147,11 @@ public class BluetoothListener extends AppCompatActivity {
         mmSocket.connect();
 
         //mmOutputStream = mmSocket.getOutputStream();
-
         mmInputStream = mmSocket.getInputStream();
 
         //System.err.println(mmInputStream.available());
 
-        //beginListenForData();
+        beginListenForData();
 
         System.err.println("Bluetooth Opened");
     }
@@ -158,47 +163,37 @@ public class BluetoothListener extends AppCompatActivity {
         stopWorker = false;
         readBufferPosition = 0;
         readBuffer = new byte[1024];
-        workerThread = new Thread(new Runnable()
-        {
-            public void run()
-            {
-                while(!Thread.currentThread().isInterrupted() && !stopWorker)
-                {
-                    try
-                    {
+        workerThread = new Thread(new Runnable() {
+            public void run() {
+                while(!Thread.currentThread().isInterrupted() && !stopWorker) {
+                    try {
                         int bytesAvailable = mmInputStream.available();
-                        if(bytesAvailable > 0)
-                        {
+                        if(bytesAvailable > 0) {
                             byte[] packetBytes = new byte[bytesAvailable];
                             mmInputStream.read(packetBytes);
                             for (int i=0; i<bytesAvailable; i++) {
                                 byte b = packetBytes[i];
-                                if(b == delimiter)
-                                {
+                                if (b == delimiter) {
                                     byte[] encodedBytes = new byte[readBufferPosition];
                                     System.arraycopy(readBuffer, 0, encodedBytes, 0, encodedBytes.length);
                                     final String data = new String(encodedBytes, "US-ASCII");
                                     readBufferPosition = 0;
 
-                                    handler.post(new Runnable()
-                                    {
-                                        public void run()
-                                        {
+                                    handler.post(new Runnable() {
+                                        public void run() {
                                             System.err.println("Data: " + data);
 
-                                            //piano.parseString(data);
+                                            piano.parseString(data);
                                         }
                                     });
                                 }
-                                else
-                                {
+                                else {
                                     readBuffer[readBufferPosition++] = b;
                                 }
                             }
                         }
                     }
-                    catch (IOException ex)
-                    {
+                    catch (IOException ex) {
                         stopWorker = true;
                     }
                 }

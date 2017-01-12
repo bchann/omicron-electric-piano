@@ -4,7 +4,12 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
+
+import static java.lang.Thread.sleep;
 
 /**
  * Created by Brian Chan on 1/6/2017.
@@ -12,7 +17,7 @@ import java.lang.reflect.Field;
 
 public class Piano {
 
-    public final int numKeys = 39;
+    public final int numKeys = 38;
     private int prevState[] = new int[numKeys];
     private int currState[] = new int[numKeys];
     private MediaPlayer notes[] = new MediaPlayer[numKeys];
@@ -21,26 +26,34 @@ public class Piano {
 
     //Parses new string
     public void parseString(String input) {
-        prevState = currState;
+        //System.err.println("len: "+ input.length());
+        if (input.length() == numKeys + 1) {
+            for (int i = 0; i < numKeys; i++) {
+                int val = Character.getNumericValue(input.charAt(i));
 
-        for (int i = 0; i < input.length(); i++) {
-            currState[i] = Character.getNumericValue(input.charAt(i));
+                if (currState[i] == 1) {
+                    playNote(i);
+                    System.err.println("i: " + i);
+                    System.err.println("prev: " + prevState[i]);
+                    System.err.println("curr: " + currState[i]);
+                }
 
-            try {
-                checkKey(i);
-            } catch (IOException e) {
-                System.err.println("ERROR: parseString()");
-                e.printStackTrace();
+                try {
+                    checkKey(val, i);
+                } catch (IOException e) {
+                    System.err.println("ERROR: parseString()");
+                    e.printStackTrace();
+                }
             }
         }
     }
 
     //Checks if the key should change states
-    private void checkKey(int key) throws IOException {
-        if (prevState[key] == 0 && currState[key] == 1 ) {
+    private void checkKey(int val, int key) throws IOException {
+        if (val == 1 && !notes[key].isPlaying()) {
             playNote(key);
         }
-        else if (prevState[key] == 1 && currState[key] == 0) {
+        else if (val == 0 && notes[key].isPlaying()) {
             if (notes[key].isPlaying()) {
                 stopNote(key);
             }
