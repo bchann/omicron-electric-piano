@@ -1,8 +1,5 @@
 package com.example.brian.piano;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothSocket;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -12,8 +9,6 @@ import android.view.View;
 import android.widget.Button;
 
 import java.io.IOException;
-import java.util.Set;
-import java.util.UUID;
 
 public class CoverActivity extends AppCompatActivity {
     private MediaPlayer mp;
@@ -48,7 +43,7 @@ public class CoverActivity extends AppCompatActivity {
 
     //Send to tone selection screen
     public void begin(View v) {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, BluetoothListener.class);
         startActivity(intent);
     }
 
