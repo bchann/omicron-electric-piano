@@ -42,9 +42,18 @@ public class BluetoothListener extends AppCompatActivity {
         numKeys = piano.numKeys;
 
         for (int i = 0; i < numKeys; i++) {
+
+            MediaPlayer mp;
+
+            System.err.println("mp: " + i);
+
             int resId = getResourceId("abc" + Integer.toString(i), "raw", getPackageName());
 
-            piano.insertMP(i, MediaPlayer.create(this, resId));
+            mp = MediaPlayer.create(this, resId);
+
+            //mp.prepareAsync();
+
+            piano.insertMP(i, mp);
         }
 
         final Button startButton = (Button)findViewById(R.id.start);
@@ -55,6 +64,18 @@ public class BluetoothListener extends AppCompatActivity {
 
                 try {
                     openBT();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        final Button stopButton = (Button)findViewById(R.id.stopButton);
+
+        stopButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                try {
+                    closeBT();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -174,7 +195,7 @@ public class BluetoothListener extends AppCompatActivity {
     void closeBT() throws IOException
     {
         stopWorker = true;
-        mmOutputStream.close();
+        //mmOutputStream.close();
         mmInputStream.close();
         mmSocket.close();
         System.err.println("Bluetooth Closed");

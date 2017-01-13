@@ -9,7 +9,7 @@ import java.io.IOException;
  */
 
 public class Piano {
-    int numKeys = 38;
+    public int numKeys = 38;
     private MediaPlayer notes[] = new MediaPlayer[numKeys];
 
     public Piano() {}
@@ -17,6 +17,9 @@ public class Piano {
     //Parses new string
     void parseString(String input) {
         //System.err.println("len: "+ input.length());
+
+        System.err.println(input);
+
         if (input.length() == numKeys + 1) {
             for (int i = 0; i < numKeys; i++) {
                 int val = Character.getNumericValue(input.charAt(i));
@@ -37,9 +40,7 @@ public class Piano {
             playNote(key);
         }
         else if (val == 0 && notes[key].isPlaying()) {
-            if (notes[key].isPlaying()) {
-                stopNote(key);
-            }
+            stopNote(key);
         }
     }
 
@@ -48,8 +49,9 @@ public class Piano {
         notes[key] = mp;
     }
 
-    private void playNote(int key) {
+    private void playNote(int key) throws IOException {
         //error but works, needs to copy to activity
+        //notes[key].prepare();
         notes[key].start();
     }
 
