@@ -20,7 +20,7 @@ public class CoverActivity extends AppCompatActivity {
 
         Button helpButton = (Button) findViewById(R.id.aboutButton);
 
-        mp = MediaPlayer.create(this, R.raw.pianotest);
+        mp = MediaPlayer.create(this, R.raw.pianotest1);
 
         helpButton.setOnTouchListener(new View.OnTouchListener() {
             @Override

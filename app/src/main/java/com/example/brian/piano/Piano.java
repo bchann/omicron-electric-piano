@@ -1,42 +1,25 @@
 package com.example.brian.piano;
 
 import android.media.MediaPlayer;
-import android.net.Uri;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
-
-import static java.lang.Thread.sleep;
 
 /**
  * Created by Brian Chan on 1/6/2017.
  */
 
 public class Piano {
-
-    public final int numKeys = 38;
-    private int prevState[] = new int[numKeys];
-    private int currState[] = new int[numKeys];
+    int numKeys = 38;
     private MediaPlayer notes[] = new MediaPlayer[numKeys];
 
     public Piano() {}
 
     //Parses new string
-    public void parseString(String input) {
+    void parseString(String input) {
         //System.err.println("len: "+ input.length());
         if (input.length() == numKeys + 1) {
             for (int i = 0; i < numKeys; i++) {
                 int val = Character.getNumericValue(input.charAt(i));
-
-                if (currState[i] == 1) {
-                    playNote(i);
-                    System.err.println("i: " + i);
-                    System.err.println("prev: " + prevState[i]);
-                    System.err.println("curr: " + currState[i]);
-                }
 
                 try {
                     checkKey(val, i);
@@ -61,7 +44,7 @@ public class Piano {
     }
 
     //Inserts MediaPlayers for all the keys, has to be done in activity
-    public void insertMP(int key, MediaPlayer mp) {
+    void insertMP(int key, MediaPlayer mp) {
         notes[key] = mp;
     }
 
